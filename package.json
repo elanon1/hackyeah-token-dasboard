@@ -1,0 +1,45 @@
+{
+  "name": "hackathon-token-meter",
+  "version": "0.1.0",
+  "description": "Privacy-first hackathon token scoreboard for Claude Code and Codex CLI.",
+  "type": "module",
+  "bin": {
+    "htm": "bin/htm.js",
+    "hackathon-token-meter": "bin/htm.js"
+  },
+  "exports": {
+    ".": "./src/sdk.js",
+    "./parsers": "./src/parsers.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "public",
+    "README.md",
+    "PRIVACY.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node bin/htm.js server",
+    "demo": "node bin/htm.js server --demo",
+    "test": "node --test test/*.test.js",
+    "check": "node scripts/check.mjs"
+  },
+  "license": "MIT",
+  "keywords": [
+    "hackathon",
+    "tokens",
+    "claude-code",
+    "codex",
+    "dashboard",
+    "privacy"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

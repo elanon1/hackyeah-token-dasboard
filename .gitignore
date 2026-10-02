@@ -1,0 +1,11 @@
+node_modules/
+*.tgz
+*.sqlite*
+.env
+.htm-data/
+.htm-test/
+.sites-runtime/
+coverage/
+server-secrets.json
+participant.json
+*.log
