@@ -4,7 +4,7 @@
 
 Paczka odczytuje lokalne liczniki po zakończeniu tury i wysyła zużycie do wspólnego dashboardu. Widzisz tokeny **input/output**, cache, podział na narzędzia i ranking zespołów. Wygląd inspirowany [hackyeah.pl](https://hackyeah.pl/).
 
-**Dashboard:** https://hackyeah.elanon.pl · [Pełna instrukcja](docs/USAGE.md)
+**Adres dashboardu:** https://hackyeah.elanon.pl · [Pełna instrukcja](docs/USAGE.md)
 
 ## Szybka instalacja uczestnika
 
@@ -52,6 +52,12 @@ kubectl -n hackyeah exec deployment/hackyeah-token-dashboard -- cat /data/server
 ```
 
 Zachowaj wynik dla siebie: `adminKey` zarządza zespołami, `viewKey` pozwala oglądać dashboard. Wdrożenie w repozytorium `elanon1/argocd`: HTTPS, SQLite na trwałym wolumenie, jeden kontener bez uprawnień roota.
+
+## Podgląd
+
+Tryb demonstracyjny z przykładowymi zespołami; wdrożenie produkcyjne zaczyna od pustego rankingu.
+
+![Dashboard w stylu HackYeah — podgląd z danymi demonstracyjnymi](docs/dashboard-preview.png)
 
 ## Dokumentacja
 
