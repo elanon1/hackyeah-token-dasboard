@@ -4,7 +4,9 @@
 
 Paczka odczytuje lokalne liczniki po zakończeniu tury i wysyła zużycie do wspólnego dashboardu. Widzisz tokeny **input/output**, cache, podział na narzędzia i ranking zespołów. Wygląd inspirowany [hackyeah.pl](https://hackyeah.pl/).
 
-**Adres dashboardu:** https://hackyeah.elanon.pl · [Pełna instrukcja](docs/USAGE.md)
+**Adres dashboardu:** https://hackyeah.elcloud.pl · [Pełna instrukcja](docs/USAGE.md)
+
+Obecny adres wskazuje na sieć Tailscale organizatora. Uczestnicy i projektor potrzebują dostępu do tej sieci; dla otwartego hackathonu należy najpierw udostępnić serwer przez publiczny HTTPS.
 
 ## Szybka instalacja uczestnika
 
@@ -12,7 +14,7 @@ Potrzebujesz **Node.js 22.13+** oraz nazwy zespołu i klucza od organizatora. W 
 
 ```sh
 npm install -g --ignore-scripts https://github.com/elanon1/hackyeah-token-dasboard/archive/refs/heads/main.tar.gz
-htm join --server https://hackyeah.elanon.pl --team "Nazwa zespołu"
+htm join --server https://hackyeah.elcloud.pl --team "Nazwa zespołu"
 ```
 
 Potwierdź zgodę na zbieranie liczników i wklej klucz w ukrytym polu. **Uruchom ponownie Claude Code i Codex. W Codex wejdź w `/hooks` i zaakceptuj dodane hooki.** Instalacja konfiguruje oba narzędzia jednocześnie.

@@ -21,9 +21,15 @@ node scripts/gitops.mjs --revision FULL_COMMIT_SHA --out /path/to/argocd/gitops/
 
 The generator never commits or pushes. Review and commit the files in `argocd` together. Its Argo root application discovers the new child Application automatically. Automatic sync intentionally does not prune the PVC or historical source ConfigMaps; remove obsolete ConfigMaps deliberately after verifying a successful upgrade.
 
+## Network and certificates
+
+`*.elcloud.pl` currently resolves to `100.100.79.68`, the organizer's Tailscale endpoint. Dashboard viewers and participant clients must have authorized network access. This is not a publicly routable endpoint. Before an event with external participants, provide a public HTTPS endpoint or arrange restricted network access; team keys do not provide network connectivity.
+
+TLS uses the existing `letsencrypt-dns` ClusterIssuer (OVH DNS-01), configured in `gitops/argo/apps/cert-manager-webhook-ovh.yaml`. HTTP-01 cannot validate this tailnet address. The issuer requires the existing out-of-band `ovh-credentials` Secret in namespace `cert-manager`; no DNS credentials are included in this application.
+
 ## First run
 
-1. Check Argo sync and pod readiness. Ingress host: `hackyeah.elanon.pl`, class `traefik`, ClusterIssuer `letsencrypt-prod`.
+1. Check Argo sync and pod readiness. Ingress host: `hackyeah.elcloud.pl`, class `traefik`, ClusterIssuer `letsencrypt-dns`.
 2. Read `/data/server-secrets.json` through `kubectl exec` (see README). No application key is in Git, container images, URLs or server startup logs.
 3. Open HTTPS, sign in with `adminKey`, and create teams. Give `viewKey` only to observers/projectors.
 4. Complete one real Claude Code and Codex turn, check `htm status`, and verify counters before enrolling everyone.

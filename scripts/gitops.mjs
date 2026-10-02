@@ -186,7 +186,7 @@ const objects = [
       name: app,
       namespace: "hackyeah",
       annotations: {
-        "cert-manager.io/cluster-issuer": "letsencrypt-prod",
+        "cert-manager.io/cluster-issuer": "letsencrypt-dns",
         "traefik.ingress.kubernetes.io/router.entrypoints": "websecure",
         "traefik.ingress.kubernetes.io/router.tls": "true",
       },
@@ -194,11 +194,11 @@ const objects = [
     spec: {
       ingressClassName: "traefik",
       tls: [
-        { hosts: ["hackyeah.elanon.pl"], secretName: "hackyeah-elanon-pl-tls" },
+        { hosts: ["hackyeah.elcloud.pl"], secretName: "hackyeah-elcloud-pl-tls" },
       ],
       rules: [
         {
-          host: "hackyeah.elanon.pl",
+          host: "hackyeah.elcloud.pl",
           http: {
             paths: [
               {

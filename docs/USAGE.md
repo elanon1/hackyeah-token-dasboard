@@ -3,7 +3,7 @@
 Privacy-first token scoreboard for **Claude Code and Codex CLI**. A dependency-free npm package, opt-in local collector, authenticated API, SQLite storage, and a responsive live dashboard.
 
 **Project:** https://github.com/elanon1/hackyeah-token-dasboard  
-**Deployment target:** https://hackyeah.elanon.pl  
+**Deployment target:** https://hackyeah.elcloud.pl  
 **GitOps:** `elanon1/argocd`, `gitops/apps/hackyeah-token-dashboard`.
 
 ## What it does
@@ -23,7 +23,7 @@ This reports usage **present in local logs**, not a provider bill or tamper-proo
 Requires **Node.js 22.13+** (Node 24 LTS recommended). Obtain a team name and team key from the organizer. In your hackathon project:
 
 ```sh
-npx --yes --package=https://github.com/elanon1/hackyeah-token-dasboard/archive/refs/heads/main.tar.gz htm join --server https://hackyeah.elanon.pl --team "My Team"
+npx --yes --package=https://github.com/elanon1/hackyeah-token-dasboard/archive/refs/heads/main.tar.gz htm join --server https://hackyeah.elcloud.pl --team "My Team"
 ```
 
 Read the collection notice, opt in, and paste the team key at the **hidden prompt**. The key does not go into your shell history. The organizer's dashboard generates the same command pinned to the deployed commit; prefer that command over `main`.
@@ -68,7 +68,7 @@ Open http://localhost:4318. The first start creates `.htm-data/server-secrets.js
 
 ## Kubernetes / Argo CD
 
-Deployment definitions live in the separate private `argocd` repo. They use your Traefik ingress and `letsencrypt-prod` issuer for `hackyeah.elanon.pl`. One replica and `Recreate` strategy protect the SQLite volume. Keys are generated on the persistent volume; no secrets are committed.
+Deployment definitions live in the separate private `argocd` repo. They use your Traefik ingress and `letsencrypt-dns` issuer for `hackyeah.elcloud.pl`. One replica and `Recreate` strategy protect the SQLite volume. Keys are generated on the persistent volume; no secrets are committed.
 
 ```sh
 kubectl -n hackyeah get pods,pvc,ingress
@@ -90,7 +90,7 @@ htm report --in 1200 --out 350 --id unique-request-123
 ```js
 import { reportUsage } from "hackathon-token-meter";
 await reportUsage({
-  server: "https://hackyeah.elanon.pl",
+  server: "https://hackyeah.elcloud.pl",
   team: "My Team",
   teamKey: process.env.HTM_TEAM_KEY,
   eventId: "request-123",
