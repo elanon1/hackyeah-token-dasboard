@@ -32,6 +32,14 @@ export const clientHome = () =>
 export function config(home = clientHome()) {
   return readJSON(join(home, "participant.json"));
 }
+function withinDirectory(root, path) {
+  try {
+    return inside(realpathSync(root), realpathSync(path));
+  } catch (error) {
+    if (error.code === "ENOENT" || error.code === "ENOTDIR") return false;
+    throw error;
+  }
+}
 function clientDB(home) {
   const db = database(join(home, "outbox.sqlite"));
   db.exec(`CREATE TABLE IF NOT EXISTS outbox(id TEXT PRIMARY KEY,payload TEXT NOT NULL,sent TEXT);
@@ -63,7 +71,7 @@ export async function parseFile(
 ) {
   const real = realpathSync(path);
   const roots = provider === "claude" ? c.claudeRoots : c.codexRoots;
-  if (!roots.some((root) => inside(root, real)))
+  if (!roots.some((root) => withinDirectory(root, real)))
     throw new Error("Transcript is outside the permitted agent directories.");
   const stat = statSync(real);
   if (!stat.isFile() || stat.size > 128 * 1024 * 1024)
@@ -98,7 +106,7 @@ export async function parseFile(
     input.destroy();
   }
   const result = parser.result();
-  if (requireScope && (!result.cwd || !inside(c.project, resolve(result.cwd))))
+  if (requireScope && (!result.cwd || !withinDirectory(c.project, result.cwd)))
     return { ...result, events: [], outOfScope: true };
   for (const e of result.events) validateEvent(e);
   return result;
@@ -222,7 +230,7 @@ export async function hook(provider, payload, home = clientHome()) {
   if (c.paused) return;
   if (
     typeof payload.cwd !== "string" ||
-    !inside(c.project, resolve(payload.cwd))
+    !withinDirectory(c.project, payload.cwd)
   )
     return;
   const path = payload.agent_transcript_path || payload.transcript_path;

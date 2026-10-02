@@ -7,6 +7,7 @@ import {
   mkdirSync,
   rmSync,
   statSync,
+  symlinkSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -117,6 +118,22 @@ test("Transcript scope/root restrictions, private-field stripping and partial li
   await assert.rejects(
     parseFile(path, "claude", { ...c, claudeRoots: [project] }),
   );
+});
+test("Directory aliases work while transcript symlinks cannot escape approved roots", async (t) => {
+  const root = temp(t), logs = join(root, "logs"), project = join(root, "project");
+  const external = join(root, "external"), alias = join(root, "alias");
+  for (const path of [logs, project, external]) mkdirSync(path);
+  symlinkSync(root, alias, "junction");
+  const row = JSON.stringify({
+    type: "assistant", cwd: join(alias, "project"), timestamp: new Date().toISOString(),
+    message: { id: "alias", usage: { input_tokens: 10, output_tokens: 2 } },
+  }) + "\n";
+  writeFileSync(join(logs, "session.jsonl"), row);
+  writeFileSync(join(external, "outside.jsonl"), row);
+  symlinkSync(external, join(logs, "escape"), "junction");
+  const c = { salt: "salt", project, since: "2020-01-01T00:00:00.000Z", claudeRoots: [join(alias, "logs")] };
+  assert.equal((await parseFile(join(logs, "session.jsonl"), "claude", c)).events.length, 1);
+  await assert.rejects(parseFile(join(logs, "escape", "outside.jsonl"), "claude", c), /outside the permitted/);
 });
 test("Real hook -> durable outbox -> HTTP -> server -> dashboard totals, including subagents", async (t) => {
   const root = temp(t),
